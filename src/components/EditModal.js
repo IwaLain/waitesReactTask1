@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react'
+import { useState, useEffect } from 'react'
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Label, Input } from 'reactstrap'
 import validator from 'validator'
 import '../styles.css'
@@ -6,16 +6,39 @@ import '../styles.css'
 const EditModal = ({ buttonTitle, editTodo, todoId }) => {
     const [modal, setModal] = useState(false)
     const [textToAdd, setTextToAdd] = useState('')
-    const [textError, setTextError] = useState('')
+    const [textError, setTextError] = useState('Обязательное поле.')
+    const [textDirty, setTextDirty] = useState(false)
+    const [formValid, setFormValid] = useState(true)
+
+    useEffect(()=> {
+        if (textError) {
+            setFormValid(false)
+        }
+        else {
+            setFormValid(true)
+        }
+    },[textError])
 
     const toggle = () => setModal(!modal)
 
-    const validation = (value) => {
-        if (!validator.isAlpha(value)) {
-            setTextError('Поле не должно содержать цифр.')
+    const blurHandler = (e) => {
+        switch (e.target.id) {
+            case 'todoEdit-text':
+                setTextDirty(true)
+                break
         }
-        else if (!validator.isLength(value, { min: 3 })) {
-            setTextError('Поле должно состоять не менее чем из 3 символов.')
+    }
+
+    const textValidation = (e) => {
+        setTextToAdd(e.target.value)
+
+        const found = e.target.value.match(/[0-9]/g)
+
+        if (found) {
+            setTextError('Поле не может содержать цифры.')
+        }
+        else if (!validator.isLength(e.target.value, { min: 3 })) {
+            setTextError('Поле должно содержать не менее 3 символов.')
         }
         else {
             setTextError('')
@@ -30,16 +53,16 @@ const EditModal = ({ buttonTitle, editTodo, todoId }) => {
                 <ModalBody>
                     <Form>
                         <FormGroup>
-                            <Label for="new-title">Text to add</Label>
-                            {textError && (
+                            <Label for="todoEdit-text">Text to add</Label>
+                            {(textError && textDirty) && (
                                 <div className="validation-error">{textError}</div>
                             )}
-                            <Input id="new-title" placeholder="Write a text to add" onChange={(e) => { setTextToAdd(e.target.value); validation(e.target.value) }}/>
+                            <Input id="todoEdit-text" placeholder="Write a text to add" onBlur={blurHandler} onChange={(e) => textValidation(e)}/>
                         </FormGroup>
                     </Form>
                 </ModalBody>
                 <ModalFooter>
-                    <Button color="primary" onClick={() => { editTodo(todoId, textToAdd); toggle() }}>Save</Button>
+                    <Button color="primary" onClick={() => { editTodo(todoId, textToAdd); toggle() }} disabled={!formValid}>Save</Button>
                     <Button color="secondary" onClick={() => toggle()}>Cancel</Button>
                 </ModalFooter>
             </Modal>
