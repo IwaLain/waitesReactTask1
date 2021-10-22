@@ -38,7 +38,9 @@ const DeleteModal = ({ buttonTitle, deleteTodo, todoId }) => {
     const nameValidation = (e) => {
         setUsername(e.target.value)
 
-        if (!validator.isAlpha(e.target.value)) {
+        const found = e.target.value.match(/[0-9]/g)
+
+        if (found) {
             setNameError('Поле не может содержать цифры.')
         }
         else if (!validator.isLength(e.target.value, { min: 3 })) {
@@ -52,7 +54,9 @@ const DeleteModal = ({ buttonTitle, deleteTodo, todoId }) => {
     const commentValidation = (e) => {
         setComment(e.target.value)
 
-        if (!validator.isAlpha(e.target.value)) {
+        const found = e.target.value.match(/[0-9]/g)
+
+        if (found) {
             setCommentError('Поле не может содержать цифры.')
         }
         else if (!validator.isLength(e.target.value, { min: 3 })) {
