@@ -5,3 +5,7 @@
   top: 50px;
   color: black;
 }
+
+.validation-error {
+  color: red;
+}
