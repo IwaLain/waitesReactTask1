@@ -70,7 +70,6 @@ const App = () => {
                     return 0;
                 })
             }
-            console.log(sorted)
             setTodos(sorted)
         }
 
@@ -82,6 +81,18 @@ const App = () => {
     const currentTodos = todos.slice(firstTodoIndex, lastTodoIndex)
 
     const paginate = (pageNumber) => setCurrentPage(pageNumber)
+
+    const viewTodo = (todoId) => {
+        
+    }
+
+    const editTodo = (todoId, text) => {
+        setTodos(todos.map((el) => el.id === todoId ? {...el, title: el.title + text} : el))
+    }
+
+    const deleteTodo = (todoId) => {
+        
+    }
 
     return (
         <>
@@ -108,7 +119,7 @@ const App = () => {
                     </Input>
                 </FormGroup>
             </div>
-            <DataTable todos={currentTodos} loading={loading}/>
+            <DataTable todos={currentTodos} loading={loading} viewTodo={viewTodo} editTodo={editTodo} deleteTodo={deleteTodo}/>
             <TodosPagination 
             todosPerPage={todosPerPage} 
             totalTodos={todos.length}
