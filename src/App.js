@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react'
+import { Switch, Route, useHistory } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import DataTable from './components/DataTable'
+import TodoPage from './views/TodoPage';
 import axios from 'axios'
 import TodosPagination from './components/TodosPagination';
 import { FormGroup, Label, Input } from 'reactstrap';
@@ -11,6 +13,9 @@ const App = () => {
     const [ currentPage, setCurrentPage ] = useState(1)
     const [ todosPerPage, setTodosPerPage ] = useState(10)
     const [ sortType, setSortType ] = useState('By Todo ID')
+
+    const history = useHistory()
+
 
     useEffect(() => {
         const getTodos = async () => {
@@ -83,7 +88,7 @@ const App = () => {
     const paginate = (pageNumber) => setCurrentPage(pageNumber)
 
     const viewTodo = (todoId) => {
-        
+        history.push('/todo/' + todoId)
     }
 
     const editTodo = (todoId, text) => {
@@ -95,37 +100,42 @@ const App = () => {
     }
 
     return (
-        <>
-            <div className="d-flex justify-content-center">
-                <FormGroup style={{marginRight: 20 + 'px'}}>
-                    <Label for="todosPerPageSelect">Records per page</Label>
-                    <Input type="select" id="todosPerPageSelect" onChange={(e) => setTodosPerPage(e.target.value)}>
-                        <option>5</option>
-                        <option defaultValue>10</option>
-                        <option>20</option>
-                        <option>50</option>
-                    </Input>
-                </FormGroup>
-                <FormGroup>
-                    <Label for="todosPerPageSelect">Sort by</Label>
-                    <Input 
-                    type="select" 
-                    id="todosPerPageSelect" 
-                    onChange={ (e) => setSortType(e.target.value) }>
-                        <option defaultValue>By Todo ID</option>
-                        <option>By User ID</option>
-                        <option>By Title</option>
-                        <option>By Completed</option>
-                    </Input>
-                </FormGroup>
-            </div>
-            <DataTable todos={currentTodos} loading={loading} viewTodo={viewTodo} editTodo={editTodo} deleteTodo={deleteTodo}/>
-            <TodosPagination 
-            todosPerPage={todosPerPage} 
-            totalTodos={todos.length}
-            paginate={paginate}
-            />
-        </>
+            <Switch>
+                <Route path='/' exact>
+                    <div>
+                    <div className="d-flex justify-content-center">
+                        <FormGroup style={{marginRight: 20 + 'px'}}>
+                            <Label for="todosPerPageSelect">Records per page</Label>
+                            <Input type="select" id="todosPerPageSelect" onChange={(e) => setTodosPerPage(e.target.value)}>
+                                <option>5</option>
+                                <option defaultValue>10</option>
+                                <option>20</option>
+                                <option>50</option>
+                            </Input>
+                        </FormGroup>
+                        <FormGroup>
+                            <Label for="todosPerPageSelect">Sort by</Label>
+                            <Input 
+                            type="select" 
+                            id="todosPerPageSelect" 
+                            onChange={ (e) => setSortType(e.target.value) }>
+                                <option defaultValue>By Todo ID</option>
+                                <option>By User ID</option>
+                                <option>By Title</option>
+                                <option>By Completed</option>
+                            </Input>
+                        </FormGroup>
+                    </div>
+                    <DataTable todos={currentTodos} loading={loading} viewTodo={viewTodo} editTodo={editTodo} deleteTodo={deleteTodo}/>
+                    <TodosPagination 
+                    todosPerPage={todosPerPage} 
+                    totalTodos={todos.length}
+                    paginate={paginate}
+                    />
+                    </div>
+                </Route>
+                <Route path='/todo/:id' component={TodoPage}/>
+            </Switch>
     )
 }
 

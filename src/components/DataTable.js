@@ -1,6 +1,7 @@
 import { Table, Button } from 'reactstrap'
 import EditModal from './EditModal'
 import DeleteModal from './DeleteModal'
+import { Link } from 'react-router-dom'
 
 const DataTable = ({ todos, loading, viewTodo, editTodo, deleteTodo } ) => {
     if (loading) {
@@ -28,7 +29,12 @@ const DataTable = ({ todos, loading, viewTodo, editTodo, deleteTodo } ) => {
                         <td>{todo.title}</td>
                         <td>{todo.completed.toString()}</td>
                         <td>
-                        <Button color="info" onClick={() => viewTodo(todo.id)}>View</Button> 
+                        <Link to={{
+                            pathname: '/todo/' + todo.id,
+                            propsSearch: { title: todo.title }
+                        }}>
+                            <Button color="info">View</Button> 
+                        </Link>
                         <EditModal buttonTitle="Edit" editTodo={editTodo} todoId={todo.id}/>
                         <DeleteModal buttonTitle="Delete" deleteTodo={deleteTodo} todoId={todo.id}/>
                         </td>
