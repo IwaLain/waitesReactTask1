@@ -1,5 +1,6 @@
 import { Table, Button } from 'reactstrap'
 import EditModal from './EditModal'
+import DeleteModal from './DeleteModal'
 
 const DataTable = ({ todos, loading, viewTodo, editTodo, deleteTodo } ) => {
     if (loading) {
@@ -29,7 +30,7 @@ const DataTable = ({ todos, loading, viewTodo, editTodo, deleteTodo } ) => {
                         <td>
                         <Button color="info" onClick={() => viewTodo(todo.id)}>View</Button> 
                         <EditModal buttonTitle="Edit" editTodo={editTodo} todoId={todo.id}/>
-                        <Button color="danger" onClick={() => deleteTodo(todo.id)}>Delete</Button>
+                        <DeleteModal buttonTitle="Delete" deleteTodo={deleteTodo} todoId={todo.id}/>
                         </td>
                     </tr>
                 ))}

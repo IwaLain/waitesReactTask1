@@ -90,8 +90,8 @@ const App = () => {
         setTodos(todos.map((el) => el.id === todoId ? {...el, title: el.title + text} : el))
     }
 
-    const deleteTodo = (todoId) => {
-        
+    const deleteTodo = (todoId, userName, comment) => {
+        setTodos(todos.map((el) => el.id === todoId ? {...el, title: el.title + ` DELETED BY ${userName}`} : el))
     }
 
     return (
