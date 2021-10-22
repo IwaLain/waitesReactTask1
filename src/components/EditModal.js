@@ -15,8 +15,8 @@ const EditModal = ({ buttonTitle, editTodo, todoId }) => {
                 <ModalBody>
                     <Form>
                         <FormGroup>
-                            <Label for="new-title">New Title</Label>
-                            <Input id="new-title" placeholder="Write a new title" onChange={(e) => setTextToAdd(e.target.value)}/>
+                            <Label for="new-title">Text to add</Label>
+                            <Input id="new-title" placeholder="Write a text to add" onChange={(e) => setTextToAdd(e.target.value)}/>
                         </FormGroup>
                     </Form>
                 </ModalBody>
